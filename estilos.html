@@ -1,0 +1,760 @@
+<style>
+  /* ==========================================================================
+     SISTEMA DE DISEÑO Y MOTOR DECLARATIVO ZERO-JS (COLGATE CORPORATIVO)
+     - Prohíbe librerías externas.
+     - Centraliza paletas de colores en variables nativas.
+     ========================================================================== */
+
+  :root {
+    /* Paleta Institucional (Variables estrictas) */
+    --color-barra-superior-institucional: #172B4D;
+    --color-azul-acento-subtitulos: #1D4ED8;
+    --color-azul-boton-interaccion: #2F74ED;
+    --color-azul-boton-interaccion-hover: #1E5ECC;
+    --color-linea-decorativa-panel: #004B87;
+
+    /* Estructura de Superficies */
+    --color-fondo-cuadricula-tecnica: #F8FAFC;
+    --color-linea-cuadricula-tecnica: #E2E8F0;
+    --color-superficie-blanca-pura: #FFFFFF;
+    --color-borde-divisor-componente: #CBD5E1;
+    --color-borde-divisor-linea-tenue: #E2E8F0;
+    --color-borde-boton-oscuro: #1E293B;
+
+    /* Escala Tipográfica (Grises de contraste) */
+    --color-texto-principal-oscuro: #0F172A;
+    --color-texto-secundario-gris: #475569;
+    --color-texto-atenuado-etiquetas: #64748B;
+    --color-texto-marcas-tiempo: #94A3B8;
+
+    /* Estado Semántico: Calibrada */
+    --color-estado-calibrada-texto: #15803D;
+    --color-estado-calibrada-fondo: #F0FDF4;
+    --color-estado-calibrada-borde: #86EFAC;
+
+    /* Restricciones Geométricas Corporativas */
+    --radio-borde-estricto-corporativo: 2px;
+  }
+
+  /* Reset Universal y Patrón de Fondo Técnico */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  }
+
+  body {
+    background-color: var(--color-fondo-cuadricula-tecnica);
+    /* Cuadrícula milimetrada lograda sin imágenes, solo gradientes matemáticos */
+    background-image: 
+      linear-gradient(to right, var(--color-linea-cuadricula-tecnica) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-linea-cuadricula-tecnica) 1px, transparent 1px);
+    background-size: 32px 32px;
+    color: var(--color-texto-principal-oscuro);
+    min-height: 100vh;
+  }
+
+  /* ==========================================================================
+     MOTOR LÓGICO NATIVO (EVALUADOR DE ESTADO)
+     ========================================================================== */
+  
+  /* 1. Ocultar controladores físicos del DOM (mantiene funcionalidad en memoria) */
+  .controlador-estado-oculto {
+    display: none !important;
+  }
+
+  /* 2. Ocultar capas dinámicas por defecto */
+  .seccion-vista-contenedora,
+  .capa-bloqueo-modal {
+    display: none;
+  }
+
+  /* 3. Selector de Hermanos (~) - Alternancia de Enrutamiento */
+  #controladorRadioVistaPanel:checked ~ .area-trabajo-principal .seccion-vista--panel {
+    display: block;
+  }
+
+  #controladorRadioVistaHistorial:checked ~ .area-trabajo-principal .seccion-vista--historial {
+    display: block;
+  }
+
+  /* 4. Selector de Hermanos (~) - Disparador de Ventana Flotante */
+  #controladorCheckboxModalVerificacion:checked ~ .capa-bloqueo-modal {
+    display: flex;
+  }
+
+  /* ==========================================================================
+     COMPONENTES VISUALES
+     ========================================================================== */
+
+  /* --- Cabecera Superior --- */
+  .barra-navegacion-sistema {
+    background-color: var(--color-barra-superior-institucional);
+    height: 64px;
+    padding: 0 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .contenedor-marca-corporativa {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .caja-logotipo-cm {
+    background-color: var(--color-superficie-blanca-pura);
+    color: var(--color-barra-superior-institucional);
+    font-weight: 800;
+    font-size: 15px;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radio-borde-estricto-corporativo);
+    letter-spacing: -0.5px;
+  }
+
+  .contenedor-textos-cabecera {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .etiqueta-sistema-superior {
+    color: #93C5FD;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  .titulo-sistema-superior {
+    color: var(--color-superficie-blanca-pura);
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .indicador-estado-operativo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-superficie-blanca-pura);
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .cuadrado-estado-verde {
+    width: 8px;
+    height: 8px;
+    background-color: #22C55E;
+    border-radius: 1px;
+  }
+
+  /* --- Estructura Contenedora --- */
+  .area-trabajo-principal {
+    max-width: 1400px;
+    margin: 32px auto;
+    padding: 0 32px;
+  }
+
+  .tarjeta-panel-control {
+    background-color: var(--color-superficie-blanca-pura);
+    border: 1px solid var(--color-borde-divisor-componente);
+    border-radius: var(--radio-borde-estricto-corporativo);
+    padding: 24px 32px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .tarjeta-panel-control::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--color-linea-decorativa-panel);
+  }
+
+  .cabecera-bloque-filtros {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 24px;
+  }
+
+  .subtitulo-categoria-azul {
+    color: var(--color-azul-acento-subtitulos);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .titulo-panel-instrumentos, .titulo-historial-principal {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--color-texto-principal-oscuro);
+  }
+
+  .titulo-historial-principal {
+    font-size: 32px;
+    margin-top: 4px;
+  }
+
+  .contador-instrumentos-encontrados, .contador-registros-historial {
+    font-size: 13px;
+    color: var(--color-texto-atenuado-etiquetas);
+  }
+
+  .contador-instrumentos-encontrados strong, .contador-registros-historial strong {
+    font-weight: 700;
+    color: var(--color-texto-principal-oscuro);
+  }
+
+  .contador-registros-historial {
+    font-size: 14px;
+    padding-top: 8px;
+  }
+
+  .contador-registros-historial strong {
+    font-size: 24px;
+    margin-right: 4px;
+  }
+
+  /* --- Cajas de Formulario --- */
+  .fila-controles-formulario {
+    display: grid;
+    grid-template-columns: 220px 1fr 140px;
+    gap: 16px;
+    align-items: flex-end;
+  }
+
+  .grupo-campo-formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .etiqueta-campo-formulario {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-texto-principal-oscuro);
+  }
+
+  .control-seleccion-linea, .control-entrada-texto {
+    height: 40px;
+    padding: 0 12px;
+    font-size: 14px;
+    border: 1px solid var(--color-borde-divisor-componente);
+    border-radius: var(--radio-borde-estricto-corporativo);
+    background-color: var(--color-superficie-blanca-pura);
+    color: var(--color-texto-principal-oscuro);
+    outline: none;
+  }
+
+  .control-seleccion-linea:focus, .control-entrada-texto:focus {
+    border-color: var(--color-azul-boton-interaccion);
+  }
+
+  .contenedor-input-icono {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .icono-lupa-busqueda {
+    position: absolute;
+    left: 12px;
+    width: 16px;
+    height: 16px;
+    stroke: var(--color-texto-atenuado-etiquetas);
+    pointer-events: none;
+  }
+
+  .control-entrada-con-icono {
+    padding-left: 38px;
+    width: 100%;
+  }
+
+  /* --- Disparadores de Estado (Labels como Botones) --- */
+  .boton-ver-historial-rect, .boton-enlace-volver {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .boton-ver-historial-rect {
+    height: 40px;
+    background-color: var(--color-superficie-blanca-pura);
+    border: 1.5px solid var(--color-texto-principal-oscuro);
+    border-radius: var(--radio-borde-estricto-corporativo);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-texto-principal-oscuro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease-in-out;
+  }
+
+  .boton-ver-historial-rect:hover {
+    background-color: #F1F5F9;
+  }
+
+  .boton-enlace-volver {
+    background: none;
+    border: none;
+    color: var(--color-azul-boton-interaccion);
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .boton-enlace-volver:hover {
+    text-decoration: underline;
+  }
+
+  .icono-flecha-retorno {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+  }
+
+  /* --- Tarjetas Metrológicas --- */
+  .cuadricula-tarjetas-pinzas {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 20px;
+  }
+
+  .tarjeta-pinza-metrologica {
+    background-color: var(--color-superficie-blanca-pura);
+    border: 1px solid var(--color-borde-divisor-componente);
+    border-radius: var(--radio-borde-estricto-corporativo);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 190px;
+    cursor: pointer;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+
+  .tarjeta-pinza-metrologica:hover, .tarjeta-pinza-metrologica:focus-visible {
+    border-color: var(--color-azul-boton-interaccion);
+    box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+    outline: none;
+  }
+
+  .cabecera-tarjeta-pinza {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .etiqueta-categoria-pinza {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-texto-atenuado-etiquetas);
+    letter-spacing: 0.6px;
+  }
+
+  .insignia-calibracion {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: var(--radio-borde-estricto-corporativo);
+  }
+
+  .simbolo-cuadrado-insignia {
+    width: 6px;
+    height: 6px;
+    background-color: currentColor;
+  }
+
+  .insignia-calibracion--calibrada {
+    background-color: var(--color-estado-calibrada-fondo);
+    border: 1px solid var(--color-estado-calibrada-borde);
+    color: var(--color-estado-calibrada-texto);
+  }
+
+  .identificador-codigo-pinza {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--color-texto-principal-oscuro);
+    margin: 10px 0 2px 0;
+  }
+
+  .descripcion-nombre-pinza {
+    font-size: 13px;
+    color: var(--color-texto-secundario-gris);
+  }
+
+  .pie-tarjeta-pinza {
+    display: flex;
+    align-items: center;
+    margin-top: 24px;
+  }
+
+  .marca-tiempo-actualizacion {
+    font-size: 11px;
+    color: var(--color-texto-marcas-tiempo);
+  }
+
+  /* --- Panel de Historial y Auditoría --- */
+  .seccion-filtros-historial {
+    border-top: 1px solid var(--color-borde-divisor-linea-tenue);
+    padding-top: 20px;
+    margin-bottom: 28px;
+  }
+
+  .cabecera-filtros-texto {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 16px;
+  }
+
+  .etiqueta-filtros-registro {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--color-texto-principal-oscuro);
+    text-transform: uppercase;
+  }
+
+  .texto-acotacion-filtros {
+    font-size: 12px;
+    color: var(--color-texto-atenuado-etiquetas);
+  }
+
+  .grilla-filtros-historial {
+    display: grid;
+    grid-template-columns: 1.8fr 1.2fr 1.5fr;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .columna-filtro-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .titulo-filtro-columna {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-texto-principal-oscuro);
+    margin-bottom: 8px;
+  }
+
+  .contenedor-rango-fechas {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  .subcampo-fecha-individual {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .subetiqueta-fecha-limite {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--color-texto-atenuado-etiquetas);
+    text-transform: uppercase;
+  }
+
+  .control-entrada-fecha, .control-seleccion-historial {
+    height: 42px;
+    width: 100%;
+    padding: 0 10px;
+    font-size: 13px;
+    border: 1px solid var(--color-borde-divisor-componente);
+    border-radius: var(--radio-borde-estricto-corporativo);
+    background-color: var(--color-superficie-blanca-pura);
+    color: var(--color-texto-principal-oscuro);
+    outline: none;
+  }
+
+  .control-entrada-fecha:focus, .control-seleccion-historial:focus {
+    border-color: var(--color-azul-boton-interaccion);
+  }
+
+  .control-seleccion-historial {
+    padding: 0 12px;
+    margin-top: 18px; 
+  }
+
+  .separador-guion-fechas {
+    color: var(--color-texto-atenuado-etiquetas);
+    padding-bottom: 10px;
+  }
+
+  .cabecera-etiqueta-pinza {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .cabecera-etiqueta-pinza .titulo-filtro-columna {
+    margin-bottom: 0;
+  }
+
+  .insignia-requiere-linea {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--color-texto-atenuado-etiquetas);
+    text-transform: uppercase;
+  }
+
+  /* Patrón visual bloqueado sin uso de imágenes externas */
+  .control-seleccion-historial--bloqueado {
+    background-color: #F8FAFC;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 6px,
+      rgba(226, 232, 240, 0.7) 6px,
+      rgba(226, 232, 240, 0.7) 12px
+    );
+    color: var(--color-texto-atenuado-etiquetas);
+    cursor: not-allowed;
+    margin-top: 0;
+  }
+
+  .texto-ayuda-disponibilidad {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-texto-atenuado-etiquetas);
+    margin-top: 6px;
+  }
+
+  /* --- Tabla de Base de Datos Visual --- */
+  .contenedor-tabla-responsiva {
+    background-color: var(--color-superficie-blanca-pura);
+    border: 1px solid var(--color-borde-divisor-componente);
+    border-radius: var(--radio-borde-estricto-corporativo);
+    overflow-x: auto;
+    margin-top: 16px;
+  }
+
+  .tabla-corporativa-auditoria {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    text-align: left;
+    min-width: 650px;
+  }
+
+  .tabla-corporativa-auditoria thead tr {
+    background-color: var(--color-barra-superior-institucional);
+  }
+
+  .tabla-corporativa-auditoria th {
+    padding: 14px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-superficie-blanca-pura);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    border: none;
+  }
+
+  .tabla-corporativa-auditoria td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-borde-divisor-linea-tenue);
+    vertical-align: middle;
+  }
+
+  .celda-fecha-principal { font-weight: 700; color: var(--color-texto-principal-oscuro); }
+  .celda-hora-secundaria { font-size: 12px; color: var(--color-texto-atenuado-etiquetas); margin-top: 2px; }
+  .celda-codigo-instrumento { font-size: 14px; font-weight: 700; color: var(--color-texto-principal-oscuro); }
+  .celda-nombre-subtitulo { font-size: 12px; color: var(--color-texto-secundario-gris); margin-top: 2px; }
+  .celda-linea-ubicacion { font-size: 13px; color: var(--color-texto-secundario-gris); font-weight: 500; }
+
+  /* --- Contenedor de Modal --- */
+  .capa-bloqueo-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(15, 23, 42, 0.55);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .panel-dialogo-modal-verificacion {
+    background-color: var(--color-superficie-blanca-pura);
+    border-radius: var(--radio-borde-estricto-corporativo);
+    border: 1px solid var(--color-borde-divisor-componente);
+    width: 92%;
+    max-width: 500px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+
+  .cabecera-franja-azul-modal {
+    background-color: var(--color-barra-superior-institucional);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .etiqueta-verificacion-estado-modal {
+    color: var(--color-superficie-blanca-pura);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  .identificador-codigo-pinza-modal {
+    color: var(--color-superficie-blanca-pura);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .cuerpo-contenido-modal {
+    padding: 28px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: var(--color-superficie-blanca-pura);
+  }
+
+  .contenedor-icono-escudo-verificacion {
+    width: 58px;
+    height: 58px;
+    min-width: 58px;
+    background-color: #EEF2FF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radio-borde-estricto-corporativo);
+  }
+
+  .icono-escudo-svg {
+    width: 28px;
+    height: 28px;
+    stroke: #2563EB;
+  }
+
+  .bloque-textos-pregunta-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .pregunta-principal-modal {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--color-texto-principal-oscuro);
+    line-height: 1.25;
+  }
+
+  .descripcion-secundaria-modal {
+    font-size: 13.5px;
+    color: var(--color-texto-atenuado-etiquetas);
+    line-height: 1.4;
+  }
+
+  .pie-acciones-modal {
+    border-top: 1px solid var(--color-borde-divisor-linea-tenue);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    background-color: var(--color-superficie-blanca-pura);
+  }
+
+  .boton-modal-accion {
+    height: 42px;
+    min-width: 110px;
+    padding: 0 24px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: var(--radio-borde-estricto-corporativo);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    transition: background-color 0.15s ease-in-out;
+  }
+
+  .boton-modal-accion--borde-oscuro {
+    background-color: var(--color-superficie-blanca-pura);
+    border: 1.5px solid var(--color-borde-boton-oscuro);
+    color: var(--color-texto-principal-oscuro);
+  }
+
+  .boton-modal-accion--borde-oscuro:hover {
+    background-color: #F8FAFC;
+  }
+
+  .boton-modal-accion--azul-corporativo {
+    background-color: var(--color-azul-boton-interaccion);
+    border: 1px solid var(--color-azul-boton-interaccion);
+    color: var(--color-superficie-blanca-pura);
+  }
+
+  .boton-modal-accion--azul-corporativo:hover {
+    background-color: var(--color-azul-boton-interaccion-hover);
+  }
+
+  /* ==========================================================================
+     MEDIA QUERIES (COMPORTAMIENTO RESPONSIVO NATIVO)
+     ========================================================================== */
+  @media (max-width: 1024px) {
+    .area-trabajo-principal { padding: 0 20px; margin: 20px auto; }
+    .grilla-filtros-historial { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .columna-filtro-item:first-child { grid-column: span 2; }
+    .control-seleccion-historial { margin-top: 0; }
+    .fila-controles-formulario { grid-template-columns: 1fr 1fr; }
+    .grupo-campo-formulario:last-child { grid-column: span 2; }
+    .boton-ver-historial-rect { width: 100%; }
+  }
+
+  @media (max-width: 768px) {
+    .barra-navegacion-sistema { padding: 0 16px; height: 56px; }
+    .titulo-sistema-superior { font-size: 15px; }
+    .texto-estado-operativo { display: none; }
+    .tarjeta-panel-control { padding: 20px 16px; }
+    .titulo-panel-instrumentos, .titulo-historial-principal { font-size: 22px; }
+    .cabecera-historial-bloque { flex-direction: column; gap: 8px; }
+    .contador-registros-historial { padding-top: 0; }
+    .cuadricula-tarjetas-pinzas { grid-template-columns: 1fr; }
+    .cuerpo-contenido-modal { flex-direction: column; align-items: flex-start; gap: 16px; padding: 20px; }
+    .contenedor-icono-escudo-verificacion { width: 48px; height: 48px; min-width: 48px; }
+    .pregunta-principal-modal { font-size: 18px; }
+  }
+
+  @media (max-width: 480px) {
+    .area-trabajo-principal { padding: 0 12px; margin: 12px auto; }
+    .fila-controles-formulario { grid-template-columns: 1fr; }
+    .grupo-campo-formulario:last-child { grid-column: span 1; }
+    .grilla-filtros-historial { grid-template-columns: 1fr; gap: 16px; }
+    .columna-filtro-item:first-child { grid-column: span 1; }
+    .contenedor-rango-fechas { flex-direction: column; gap: 8px; }
+    .separador-guion-fechas { display: none; }
+    .pie-acciones-modal { flex-direction: column-reverse; gap: 8px; padding: 16px; }
+    .boton-modal-accion { width: 100%; }
+  }
+</style>
