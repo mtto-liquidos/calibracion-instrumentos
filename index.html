@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control Metrológico - Calibración de instrumentos</title>
+  
+  <!-- Inyección nativa de la hoja de estilos y del motor de estado declarativo CSS -->
+  <?!= incluirArchivoSecundario('estilos'); ?>
+</head>
+<body>
+
+  <!-- =====================================================================
+       MOTOR DE ESTADO DECLARATIVO (REEMPLAZO ESTRICTO DE JAVASCRIPT)
+       Entradas ocultas cuya propiedad ':checked' es evaluada por CSS 
+       para alternar la visibilidad estructural del DOM de manera síncrona.
+       ===================================================================== -->
+  
+  <!-- Controlador de Navegación: Muestra el Tablero Principal (Activo por defecto) -->
+  <input 
+    type="radio" 
+    name="grupoNavegacionVistas" 
+    id="controladorRadioVistaPanel" 
+    class="controlador-estado-oculto" 
+    checked
+  >
+  
+  <!-- Controlador de Navegación: Muestra el Registro Histórico -->
+  <input 
+    type="radio" 
+    name="grupoNavegacionVistas" 
+    id="controladorRadioVistaHistorial" 
+    class="controlador-estado-oculto"
+  >
+
+  <!-- Controlador de Ventana Emergente: Despliega el Modal de Confirmación -->
+  <input 
+    type="checkbox" 
+    id="controladorCheckboxModalVerificacion" 
+    class="controlador-estado-oculto"
+  >
+
+  <!-- =====================================================================
+       CABECERA CORPORATIVA INSTITUCIONAL
+       ===================================================================== -->
+  <header class="barra-navegacion-sistema">
+    <div class="contenedor-marca-corporativa">
+      <div class="caja-logotipo-cm">CM</div>
+      <div class="contenedor-textos-cabecera">
+        <span class="etiqueta-sistema-superior">Control Metrológico</span>
+        <h1 class="titulo-sistema-superior">Calibración de instrumentos</h1>
+      </div>
+    </div>
+    <div class="indicador-estado-operativo">
+      <span class="cuadrado-estado-verde"></span>
+      <span class="texto-estado-operativo">Sistema operativo</span>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       ÁREA PRINCIPAL DE TRABAJO (CONTENEDOR DE ENRUTAMIENTO VISUAL)
+       ===================================================================== -->
+  <div class="area-trabajo-principal">
+
+    <!-- -------------------------------------------------------------------
+         VISTA 1: TABLERO DE INSTRUMENTOS EN PLANTA
+         Visible únicamente si 'controladorRadioVistaPanel' está marcado
+         ------------------------------------------------------------------- -->
+    <main class="seccion-vista-contenedora seccion-vista--panel">
+      
+      <section class="tarjeta-panel-control">
+        <div class="cabecera-bloque-filtros">
+          <div>
+            <div class="subtitulo-categoria-azul">Instrumentación de Planta</div>
+            <h2 class="titulo-panel-instrumentos">Control de pinzas</h2>
+          </div>
+          <div class="contador-instrumentos-encontrados">
+            <strong>1</strong> instrumentos encontrados
+          </div>
+        </div>
+
+        <div class="fila-controles-formulario">
+          <div class="grupo-campo-formulario">
+            <label for="selectorLineaProduccion" class="etiqueta-campo-formulario">Línea</label>
+            <select id="selectorLineaProduccion" class="control-seleccion-linea">
+              <option value="Línea 1">Línea 1</option>
+              <option value="Línea 2">Línea 2</option>
+              <option value="Línea 3">Línea 3</option>
+            </select>
+          </div>
+
+          <div class="grupo-campo-formulario">
+            <label for="campoTextoBusqueda" class="etiqueta-campo-formulario">Buscar instrumento</label>
+            <div class="contenedor-input-icono">
+              <!-- Icono inyectado en línea (SVG Puro) - Cero dependencias FontAwesome -->
+              <svg class="icono-lupa-busqueda" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input 
+                type="text" 
+                id="campoTextoBusqueda" 
+                class="control-entrada-texto control-entrada-con-icono" 
+                placeholder="Filtrar pinza por nombre o ID..."
+              >
+            </div>
+          </div>
+
+          <div class="grupo-campo-formulario">
+            <span class="etiqueta-campo-formulario">Historial</span>
+            <!-- La etiqueta label delega el clic al radio oculto para cambiar la vista -->
+            <label for="controladorRadioVistaHistorial" class="boton-ver-historial-rect" tabindex="0">
+              Ver Historial
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section class="cuadricula-tarjetas-pinzas">
+        <!-- Tarjeta interactiva: Al hacer clic, marca el checkbox oculto del modal -->
+        <label for="controladorCheckboxModalVerificacion" class="tarjeta-pinza-metrologica" tabindex="0">
+          <div>
+            <div class="cabecera-tarjeta-pinza">
+              <span class="etiqueta-categoria-pinza">PINZA</span>
+              <span class="insignia-calibracion insignia-calibracion--calibrada">
+                <span class="simbolo-cuadrado-insignia"></span>
+                Calibrada
+              </span>
+            </div>
+            <div class="identificador-codigo-pinza">P1-002</div>
+            <div class="descripcion-nombre-pinza">Pinza amperimétrica</div>
+          </div>
+          <div class="pie-tarjeta-pinza">
+            <span class="marca-tiempo-actualizacion">Última actualización: 14:30</span>
+          </div>
+        </label>
+      </section>
+
+    </main>
+
+    <!-- -------------------------------------------------------------------
+         VISTA 2: AUDITORÍA Y REGISTRO HISTÓRICO
+         Visible únicamente si 'controladorRadioVistaHistorial' está marcado
+         ------------------------------------------------------------------- -->
+    <section class="seccion-vista-contenedora seccion-vista--historial">
+      
+      <section class="tarjeta-panel-control">
+        
+        <!-- Retorno al panel: Marca el radio oculto principal -->
+        <label for="controladorRadioVistaPanel" class="boton-enlace-volver" tabindex="0">
+          <svg class="icono-flecha-retorno" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Volver
+        </label>
+
+        <div class="cabecera-historial-bloque">
+          <div>
+            <div class="subtitulo-categoria-azul">Registro Metrológico</div>
+            <h2 class="titulo-historial-principal">Historial de Calibraciones</h2>
+            <p class="parrafo-descripcion-historial">Consulta los cambios de estado registrados para cada instrumento.</p>
+          </div>
+          <div class="contador-registros-historial">
+            <strong>1</strong> registros
+          </div>
+        </div>
+
+        <div class="seccion-filtros-historial">
+          <div class="cabecera-filtros-texto">
+            <span class="etiqueta-filtros-registro">FILTROS DE REGISTRO</span>
+            <span class="texto-acotacion-filtros">Acota los resultados por rango de fechas, línea e instrumento.</span>
+          </div>
+
+          <div class="grilla-filtros-historial">
+            <div class="columna-filtro-item">
+              <span class="titulo-filtro-columna">Rango de fechas</span>
+              <div class="contenedor-rango-fechas">
+                <div class="subcampo-fecha-individual">
+                  <span class="subetiqueta-fecha-limite">FECHA INICIAL</span>
+                  <input type="date" class="control-entrada-fecha">
+                </div>
+                <span class="separador-guion-fechas">&mdash;</span>
+                <div class="subcampo-fecha-individual">
+                  <span class="subetiqueta-fecha-limite">FECHA FINAL</span>
+                  <input type="date" class="control-entrada-fecha">
+                </div>
+              </div>
+            </div>
+
+            <div class="columna-filtro-item">
+              <label for="selectorLineaAuditoria" class="titulo-filtro-columna">Línea</label>
+              <select id="selectorLineaAuditoria" class="control-seleccion-historial">
+                <option value="">Seleccionar línea</option>
+                <option value="Línea 1">Línea 1</option>
+                <option value="Línea 2">Línea 2</option>
+                <option value="Línea 3">Línea 3</option>
+              </select>
+            </div>
+
+            <div class="columna-filtro-item">
+              <div class="cabecera-etiqueta-pinza">
+                <span class="titulo-filtro-columna">Pinza</span>
+                <span class="insignia-requiere-linea">REQUIERE LÍNEA</span>
+              </div>
+              <div class="contenedor-seleccion-bloqueada">
+                <!-- Select inactivo por defecto, dependiente de la línea -->
+                <select class="control-seleccion-historial control-seleccion-historial--bloqueado" disabled>
+                  <option value="">Selecciona una línea primero</option>
+                </select>
+              </div>
+              <span class="texto-ayuda-disponibilidad">Disponible después de elegir una línea</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="contenedor-tabla-responsiva">
+          <table class="tabla-corporativa-auditoria">
+            <thead>
+              <tr>
+                <th scope="col">FECHA Y HORA</th>
+                <th scope="col">ID DE LA PINZA</th>
+                <th scope="col">LÍNEA</th>
+                <th scope="col">ESTADO REGISTRADO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="celda-fecha-principal">18 Jun 2025</div>
+                  <div class="celda-hora-secundaria">14:30</div>
+                </td>
+                <td>
+                  <div class="celda-codigo-instrumento">P1-002</div>
+                  <div class="celda-nombre-subtitulo">Pinza amperimétrica</div>
+                </td>
+                <td class="celda-linea-ubicacion">Línea 1</td>
+                <td>
+                  <span class="insignia-calibracion insignia-calibracion--calibrada">
+                    <span class="simbolo-cuadrado-insignia"></span>
+                    Calibrada
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+    </section>
+
+  </div>
+
+  <!-- =====================================================================
+       VENTANA MODAL FLOTANTE (VERIFICACIÓN DE ESTADO)
+       ===================================================================== -->
+  <div class="capa-bloqueo-modal" role="dialog" aria-modal="true">
+    <div class="panel-dialogo-modal-verificacion">
+      
+      <header class="cabecera-franja-azul-modal">
+        <span class="etiqueta-verificacion-estado-modal">VERIFICACIÓN DE ESTADO</span>
+        <span class="identificador-codigo-pinza-modal">P1-002</span>
+      </header>
+
+      <div class="cuerpo-contenido-modal">
+        <div class="contenedor-icono-escudo-verificacion">
+          <svg class="icono-escudo-svg" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <path d="M9 12l2 2 4-4"></path>
+          </svg>
+        </div>
+
+        <div class="bloque-textos-pregunta-modal">
+          <h3 class="pregunta-principal-modal">¿La pinza está calibrada?</h3>
+          <p class="descripcion-secundaria-modal">Confirma el estado actual del instrumento seleccionado.</p>
+        </div>
+      </div>
+
+      <footer class="pie-acciones-modal">
+        <!-- Etiquetas que desmarcan el checkbox oculto, ocultando el modal vía CSS -->
+        <label for="controladorCheckboxModalVerificacion" class="boton-modal-accion boton-modal-accion--borde-oscuro" tabindex="0">
+          No
+        </label>
+        <label for="controladorCheckboxModalVerificacion" class="boton-modal-accion boton-modal-accion--azul-corporativo" tabindex="0">
+          Confirmar
+        </label>
+      </footer>
+
+    </div>
+  </div>
+
+</body>
+</html>
